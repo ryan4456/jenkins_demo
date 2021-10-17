@@ -18,4 +18,14 @@ pipeline {
             }
         }
     }
+
+    post {
+        always {
+            emailext(
+                subject: 'Build Notification ${PROJECT_NAME} - Build # ${BUILD_NUMBER} - ${BUILD_STATUS}',
+                body: '${FILE, path="email.html"}',
+                to: 'ryan.li.2021@outlook.com'
+            )
+        }
+    }
 }
