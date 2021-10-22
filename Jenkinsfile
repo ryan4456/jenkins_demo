@@ -7,6 +7,16 @@ pipeline {
                 checkout([$class: 'GitSCM', branches: [[name: '*/${branch}']], extensions: [], userRemoteConfigs: [[credentialsId: 'Github', url: 'https://github.com/ryan4456/jenkins_demo.git']]])
             }
         }
+        stage('SonarQube Check') {
+            steps {
+                script {
+                    scannerHome = tool 'sonar-scanner'
+                }
+                withSonarQubeEnv('SonarQubeServer') {
+                    bat "${scannerHome}/bin/sonar-scanner"
+                }
+            }
+        }
         stage("Build Project") {
             steps {
                 bat 'mvn clean package'
